@@ -13,12 +13,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-		.antMatchers("/api/hello")
-		.hasAuthority("DEV_USER")
-				.anyRequest()
-				.authenticated().and().oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(new KCJwtAuthenticationConverter("account"));
+        .antMatchers("/hello/")
+        .hasAuthority("ROLE_DEV_USER")
+        .anyRequest()
+        .authenticated()
+        .and()
+        .oauth2ResourceServer()
+//            .jwt().jwtAuthenticationConverter(new KCJwtAuthenticationConverter("account"));
+        .jwt().jwtAuthenticationConverter(new KCJwtAuthenticationConverter("springboot-app"));
 				
 	}
 }
