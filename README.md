@@ -86,4 +86,22 @@ public class KCJwtAuthenticationConverter implements Converter<Jwt, AbstractAuth
 ```
 It takes the client name and based on the client name it extract the roles from the token and return the granted authority object.
 
--  configure WebSecurityConfigurerAdapter to match the pattern and role.  
+-  configure WebSecurityConfigurerAdapter to match the pattern and role.  Provide custom `KCJwtAuthenticationConverter` object as jwtAuthenticationConverter. 
+```
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+		http.authorizeRequests()
+        .antMatchers("/hello/")
+        .hasAuthority("ROLE_DEV_USER")
+        .anyRequest()
+        .authenticated()
+        .and()
+        .oauth2ResourceServer()
+        .jwt().jwtAuthenticationConverter(new KCJwtAuthenticationConverter("springboot-app"));
+				
+	```
